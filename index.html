@@ -221,18 +221,43 @@
         "Checking...";
 
 
-      // API will be connected here later
+  try {
+  const response = await fetch(
+    `/api/check?memberId=${encodeURIComponent(memberId)}&studentId=${encodeURIComponent(studentId)}`
+  );
 
-      document.getElementById("result").innerHTML =
+  const data = await response.json();
 
-        '<div class="success">' +
-        '<strong>Test successful!</strong><br><br>' +
-        'Membership ID: ' +
-        memberId +
-        '<br>' +
-        'Student ID: ' +
-        studentId +
-        '</div>';
+  if (data.found) {
+    document.getElementById("result").innerHTML =
+      '<div class="success">' +
+      '<strong>Membership Verified ✓</strong><br><br>' +
+      'Membership ID: ' +
+      data.memberId +
+      '<br>' +
+      'Membership Year: ' +
+      data.membershipYear +
+      '<br>' +
+      'Status: ' +
+      data.status +
+      '</div>';
+  } else {
+    document.getElementById("result").innerHTML =
+      '<div class="error">' +
+      '<strong>Membership Not Found</strong><br><br>' +
+      'Please check your Membership ID and Student ID.' +
+      '</div>';
+  }
+
+} catch (error) {
+  console.error(error);
+
+  document.getElementById("result").innerHTML =
+    '<div class="error">' +
+    '<strong>Something went wrong.</strong><br><br>' +
+    'Please try again later.' +
+    '</div>';
+}
 
     }
 
